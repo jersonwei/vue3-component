@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { watch, ref } from 'vue'
+import { useCopy, copyToClipoard } from '../../../hooks/useCopy/index'
 import * as ElIcons from '@element-plus/icons-vue'
 import { toLine } from '../../../utils/func'
 let props = defineProps<{ title: string; visible: boolean }>()
 let emits = defineEmits(['update:visible'])
 let dialogVisible = ref<boolean>(props.visible)
+const clickItem = (item: string) => {
+  console.log(item, `<el-icon-${toLine(item)} />`)
+  const text = `<el-icon-${toLine(item)} />`
+  // useCopy(text)
+  copyToClipoard(text)
+  dialogVisible.value = false
+}
 const handleClick = () => {
   dialogVisible.value = !dialogVisible.value
   emits('update:visible', !props.visible)
@@ -32,6 +40,7 @@ watch(
         <div
           v-for="(item, index) in Object.keys(ElIcons)"
           class="item"
+          @click="clickItem(item)"
           :key="index"
         >
           <div>
