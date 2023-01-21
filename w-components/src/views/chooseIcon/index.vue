@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import wChooseIcon from '../../components/iconChoose/src/index.vue'
+import { ref } from 'vue'
 let title = ref<string>('选择图标')
 let visible = ref<boolean>(false)
 </script>
