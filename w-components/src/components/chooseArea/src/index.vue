@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
+import { areaArrType, emitArrType } from '../type'
 import allAreas from '../lib/pca-code.json'
-interface arrType {
-  code?: string
-  name?: string
-}
 let province = ref<string>('')
 let city = ref<string>('')
 let area = ref<string>('')
-let cityList = ref<any>([])
-let areaList = ref<any>([])
-const allAreasCopy = ref(allAreas)
-const changeProvince = (val: string | undefined) => {}
+let cityList = ref<areaArrType[]>([])
+let areaList = ref<areaArrType[]>([])
+const allAreasCopy = ref<areaArrType[]>(allAreas)
+let emits = defineEmits(['change'])
 watch(
   () => province.value,
   val => {
@@ -20,7 +17,7 @@ watch(
       city.value = ''
       return
     }
-    cityList.value = allAreas.find(i => i.code === val)?.children
+    cityList.value = allAreas.find(i => i.code === val)?.children!
     // 是否自动展示第一项
     city.value = cityList.value[0].code
   }
@@ -33,24 +30,40 @@ watch(
       area.value = ''
       return
     }
-    areaList.value = cityList.value.find((i: any) => i.code === val)?.children
+    areaList.value = cityList.value.find((i: any) => i.code === val)?.children!
     // 是否自动展示第一项
     area.value = areaList.value[0].code
   }
 )
-onMounted(() => {
-  // province.value = allAreas
-})
-computed(() => {})
+watch(
+  () => area.value,
+  val => {
+    if (val) {
+      let emitCity: emitArrType = {
+        code: city.value,
+        name:
+          city.value && cityList.value.find(i => i.code === city.value)!.name
+      }
+      let emitProvince: emitArrType = {
+        code: province.value,
+        name: allAreas.find(i => i.code === province.value)!.name
+      }
+      let emitArea: emitArrType = {
+        code: val,
+        name: val && areaList.value.find(i => i.code === val)!.name
+      }
+      emits('change', {
+        province: emitProvince,
+        city: emitCity,
+        area: emitArea
+      })
+    }
+  }
+)
 </script>
 <template>
   <div>
-    <el-select
-      v-model="province"
-      placeholder="请选择省份"
-      @change="changeProvince"
-      clearable
-    >
+    <el-select v-model="province" placeholder="请选择省份" clearable>
       <el-option
         v-for="item in allAreasCopy"
         :value="item.code"
