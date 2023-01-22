@@ -24,6 +24,10 @@ const routes: RouteRecordRaw[] =[
       {
         path: 'areaCascader',
         component:() => import('../views/cascaderArea/index.vue')
+      },
+      {
+        path: 'trend',
+        component:() => import('../views/trend/index.vue')
       }
     ]
   }

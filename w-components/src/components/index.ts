@@ -3,7 +3,9 @@ import cascaderArea from './cascaderArea'
 import chooseArea from './chooseArea'
 import chooseStreet from './chooseStreet'
 import chooseIcon from './iconChoose'
+import trend from './trend'
 const components = [
+  trend,
   chooseArea,
   chooseIcon,
   chooseStreet,
