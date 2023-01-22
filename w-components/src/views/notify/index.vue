@@ -9,6 +9,10 @@
   <wNotify :value="55" isDot></wNotify>
   <br />
   <br />
-  <wNotify :value="22" :icon="'chatRound'"></wNotify>
+  <wNotify :value="22" :icon="'chatRound'">
+    <template #default>
+      这是弹出层插槽
+    </template>
+  </wNotify>
 </template>
 <style lang="scss" scoped></style>

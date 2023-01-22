@@ -20,8 +20,15 @@ let props = defineProps({
 })
 </script>
 <template>
-  <el-badge :value="value" :max="max" :is-dot="isDot" class="item">
-    <component :is="`el-icon-${toLine(icon)}`"></component>
-  </el-badge>
+  <el-popover placement="top-start" :width="200" trigger="click">
+    <template #default>
+      <slot></slot>
+    </template>
+    <template #reference>
+      <el-badge :value="value" :max="max" :is-dot="isDot" class="item">
+        <component :is="`el-icon-${toLine(icon)}`"></component>
+      </el-badge>
+    </template>
+  </el-popover>
 </template>
 <style lang="scss" scoped></style>
