@@ -20,6 +20,10 @@ const routes: RouteRecordRaw[] =[
       {
         path: 'streetChoose',
         component:() => import('../views/chooseStreet/index.vue')
+      },
+      {
+        path: 'areaCascader',
+        component:() => import('../views/cascaderArea/index.vue')
       }
     ]
   }

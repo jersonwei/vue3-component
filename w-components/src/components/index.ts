@@ -1,11 +1,13 @@
 import type {App} from 'vue'
+import cascaderArea from './cascaderArea'
 import chooseArea from './chooseArea'
 import chooseStreet from './chooseStreet'
 import chooseIcon from './iconChoose'
 const components = [
   chooseArea,
   chooseIcon,
-  chooseStreet
+  chooseStreet,
+  cascaderArea
 ]
 
 export default {
