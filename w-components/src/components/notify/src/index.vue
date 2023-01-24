@@ -20,7 +20,7 @@ let props = defineProps({
 })
 </script>
 <template>
-  <el-popover placement="top-start" :width="200" trigger="click">
+  <el-popover placement="top-start" :width="400" trigger="click">
     <template #default>
       <slot></slot>
     </template>

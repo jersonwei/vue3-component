@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { list, actions } from './data'
+</script>
 <template>
   <wNotify :value="50"></wNotify>
   <br />
@@ -11,7 +13,7 @@
   <br />
   <wNotify :value="22" :icon="'chatRound'">
     <template #default>
-      这是弹出层插槽
+      <wList :list="list" :actions="actions"></wList>
     </template>
   </wNotify>
 </template>
