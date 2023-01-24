@@ -8,11 +8,21 @@ export  interface ListItem {
 }
 
 export interface ListOptions {
-  title:string
-  content: ListItem[]
+  title?:string
+  content?: ListItem[]
 }
 
 export interface ActionOptions {
   text: string
   icon: string
+}
+
+export interface clickItemObj {
+  item:ListOptions
+  idx:number
+}
+
+export interface clickActionObj {
+  item:ActionOptions
+  idx:number
 }

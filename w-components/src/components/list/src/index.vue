@@ -11,6 +11,13 @@ let props = defineProps({
     type: Array as PropType<ActionOptions[]>
   }
 })
+let emits = defineEmits(['clickItem', 'clickAction'])
+const clickContainer = (item: ListOptions, idx: number) => {
+  emits('clickItem', { item, idx })
+}
+const clickAction = (item: ActionOptions, idx: number) => {
+  emits('clickAction', { item, idx })
+}
 </script>
 <template>
   <div class="list-tabs__item">
@@ -26,6 +33,7 @@ let props = defineProps({
             v-for="(subItem, subIdx) in item.content"
             :key="subIdx"
             class="container"
+            @click="clickContainer(subItem, subIdx)"
           >
             <div class="avatar">
               <el-avatar :src="subItem.avatar" :size="50"></el-avatar>
@@ -43,7 +51,12 @@ let props = defineProps({
             </div>
           </div>
           <div class="actions">
-            <div class="a-item" v-for="(action, index) in actions" :key="index">
+            <div
+              class="a-item"
+              @click="clickAction(action, index)"
+              v-for="(action, index) in actions"
+              :key="index"
+            >
               <div class="a-icon">
                 <component :is="`el-icon-${toLine(action.icon)}`"></component>
               </div>
