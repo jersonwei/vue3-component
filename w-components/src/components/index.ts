@@ -4,9 +4,11 @@ import chooseArea from './chooseArea'
 import chooseStreet from './chooseStreet'
 import chooseIcon from './iconChoose'
 import list from './list'
+import menu from './menu'
 import notify from './notify'
 import trend from './trend'
 const components = [
+  menu,
   list,
   notify,
   trend,
