@@ -104,9 +104,4 @@ let data = [
     :data="data"
   ></wMenu>
 </template>
-<style lang="scss" scoped>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 400px;
-}
-</style>
+<style lang="scss" scoped></style>

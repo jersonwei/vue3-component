@@ -1,12 +1,18 @@
-import { defineComponent, PropType, useAttrs } from "vue";
-import { toLine } from "../../../utils/func";
-import { menuItem } from "./type";
+import { DefineComponent, defineComponent, PropType, useAttrs } from 'vue'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import { defaultMenuOptions, MenuItem, MenuOptions } from '../../menu/src/type'
 
 export default defineComponent({
-  props:{
+  // 属性定义
+  props: {
     data: {
-      type: Array as PropType<menuItem[]>,
+      type: Array as PropType<MenuItem[]>,
       required: true
+    },
+    menuOptions: {
+      type: Object as PropType<MenuOptions>,
+      required: false,
+      default: () => ({})
     },
     // 默认选中项
     defaultActive: {
@@ -17,44 +23,64 @@ export default defineComponent({
     router: {
       type: Boolean,
       default: false
-    }
+    },
   },
-  setup(props,ctx){
-    let renderMenu = (data:menuItem[])=>{
-      return data.map((item:menuItem)=>{
-        item.i = `el-icon-${toLine(item.icon!)}`
-        // submenu插槽
-        let slots = {
-          title:()=>{
-            return <>
-              <item.i />
-              <span>{item.name}</span>
-            </>
-          }
-        }
-        // 处理无限子菜单
-        if (item.children && item.children.length){
-          return (
-            <el-sub-menu index={item.index} v-slots={slots}>
-              {renderMenu(item.children)}
-            </el-sub-menu>
-          )
-        }
-        // 没有子菜单项
-        return <el-menu-item index={item.index}>
-          <item.i />
-          <span>{item.name}</span>
-        </el-menu-item>
-      })
+
+  setup (props, context) {
+    console.log(props, context)
+
+    // 合并默认的字段配置和用户传入的字段配置
+    const options = {
+      ...defaultMenuOptions,
+      ...props.menuOptions
     }
-    return ()=>{
-      console.log(props);
-      let attrs = useAttrs()
+
+    // 渲染图标
+    const renderIcon = (icon?: string) => {
+      if (!icon) {
+        return null
+      }
+      const IconComp = (ElementPlusIconsVue as { [key: string]: DefineComponent })[icon]
       return (
-        <el-menu {...attrs} defaultActive={props.defaultActive} router={props.router}>
-          {renderMenu(props.data)}
-        </el-menu>
+        <el-icon>
+          <IconComp/>
+        </el-icon>
       )
     }
+    let attrs = useAttrs()
+    // 递归渲染菜单
+    const renderMenu = (list: any[]) => {
+      return list.map(item => {
+        // 如果没有子菜单，使用 el-menu-item 渲染菜单项
+        if (!item[options.children!] || !item[options.children!].length) {
+          return (
+            <el-menu-item index={item[options.code!]}>
+              {renderIcon(item[options.icon!])}
+              <span>{item[options.title!]}</span>
+            </el-menu-item>
+          )
+        }
+
+        // 有子菜单，使用 el-sub-menu 渲染子菜单
+        // el-sub-menu 的插槽（title 和 default）
+        const slots = {
+          title: () => (
+            <>
+              {renderIcon(item[options.icon!])}
+              <span>{item[options.title!]}</span>
+            </>
+          ),
+          default: () => renderMenu(item[options.children!])
+        }
+
+        return <el-sub-menu index={item[options.code!]} v-slots={slots} />
+      })
+    }
+
+    return () => (
+      <el-menu {...context.attrs} defaultActive={props.defaultActive} router={props.router}>
+        {renderMenu(props.data)}
+      </el-menu>
+    )
   }
 })
