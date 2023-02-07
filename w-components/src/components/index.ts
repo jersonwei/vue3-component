@@ -6,9 +6,11 @@ import chooseIcon from './iconChoose'
 import list from './list'
 import menu from './menu'
 import notify from './notify'
+import progress from './progress'
 import trend from './trend'
 
 const components = [
+  progress,
   menu,
   list,
   notify,
