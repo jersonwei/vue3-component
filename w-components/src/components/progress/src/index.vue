@@ -36,4 +36,13 @@ onMounted(() => {
 <template>
   <el-progress :percentage="p" v-bind="$attrs"></el-progress>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-progress--line {
+  margin-bottom: 15px;
+  width: 350px;
+}
+.el-progress--circle {
+  margin-right: 15px;
+  width: 350px;
+}
+</style>

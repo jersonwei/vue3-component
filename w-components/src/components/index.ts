@@ -7,9 +7,10 @@ import list from './list'
 import menu from './menu'
 import notify from './notify'
 import progress from './progress'
+import timer from './timer'
 import trend from './trend'
-
 const components = [
+  timer,
   progress,
   menu,
   list,
