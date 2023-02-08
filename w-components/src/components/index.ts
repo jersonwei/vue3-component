@@ -1,6 +1,7 @@
 import type {App} from 'vue'
 import cascaderArea from './cascaderArea'
 import chooseArea from './chooseArea'
+import chooseDate from './chooseDate'
 import chooseStreet from './chooseStreet'
 import chooseIcon from './iconChoose'
 import list from './list'
@@ -10,6 +11,7 @@ import progress from './progress'
 import timer from './timer'
 import trend from './trend'
 const components = [
+  chooseDate,
   timer,
   progress,
   menu,

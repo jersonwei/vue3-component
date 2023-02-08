@@ -37,6 +37,11 @@ let data = [
     index: '/chooseTime'
   },
   {
+    icon: 'Calendar',
+    name: '日期选择',
+    index: '/chooseDate'
+  },
+  {
     icon: 'Bell',
     name: '通知菜单',
     index: '/notify'

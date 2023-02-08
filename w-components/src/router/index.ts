@@ -2,7 +2,7 @@ import { createRouter,createWebHistory,RouteRecordRaw} from 'vue-router'
 import container from '../components/container/src/index.vue'
 const routes: RouteRecordRaw[] =[
   {
-    path:'/',
+    path:'',
     component:() => container,
     children:[
       {
@@ -44,6 +44,10 @@ const routes: RouteRecordRaw[] =[
       {
         path: 'chooseTime',
         component:() => import('../views/timer/index.vue')
+      },
+      {
+        path: 'chooseDate',
+        component:() => import('../views/chooseDate/index.vue')
       }
     ]
   }
