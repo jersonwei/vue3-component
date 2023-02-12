@@ -1,12 +1,30 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { cityItem } from './type'
 import city from '../lib/city'
+let emits = defineEmits(['changeItem'])
+// 选择的结果
 let result = ref<string>('请选择')
+// 弹出层显示
 let visible = ref<boolean>(false)
+// 单选框的值
 let radioValue = ref<string>('按城市')
+// 选择框的值
 let selectValue = ref<string>('')
+// 默认数据
 let cities = ref(city.cities)
-const options = [
+const clickItem = (item: cityItem) => {
+  result.value = item.name
+  visible.value = false
+  emits('changeItem', item)
+  console.log('省份', item)
+}
+const clickChat = (item: string) => {
+  let el = document.getElementById(item)!
+  el && el.scrollIntoView()
+  console.log('字母', item)
+}
+const options = ref([
   {
     value: 'Option1',
     label: 'Option1'
@@ -27,7 +45,7 @@ const options = [
     value: 'Option5',
     label: 'Option5'
   }
-]
+])
 </script>
 <template>
   <el-popover
@@ -70,22 +88,26 @@ const options = [
       </el-row>
       <div class="city">
         <!-- <div v-for="(value, key) in cities">{{ key }}</div> -->
+        <!-- 字母区域 -->
         <div
           class="city-item"
           :key="index"
+          @click="clickChat(item)"
           v-for="(item, index) in Object.keys(cities)"
         >
           {{ item }}
         </div>
+        <!-- 省份区域 -->
         <el-scrollbar max-height="400px">
           <template v-for="(value, key) in cities" :key="key">
-            <el-row style="margin-bottom: 6px;">
+            <el-row style="margin-bottom: 6px;" :id="key">
               <el-col :span="2">{{ key }}</el-col>
               <el-col class="city-name" :span="22">
                 <div
                   class="city-name-item"
                   v-for="(item, index) in value"
                   :key="item.id"
+                  @click="clickItem(item)"
                 >
                   {{ item.name }}
                 </div>
@@ -123,6 +145,8 @@ svg {
   align-items: center;
   flex-wrap: wrap;
   margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
   &-item {
     padding: 3px 6px;
     margin-right: 8px;
@@ -137,6 +161,7 @@ svg {
   &-item {
     margin-right: 6px;
     margin-bottom: 6px;
+    cursor: pointer;
   }
 }
 </style>
