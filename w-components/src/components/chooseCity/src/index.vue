@@ -29,6 +29,15 @@ const clickProvinceItem = (item: string) => {
   visible.value = false
   emits('changeProItem', item)
 }
+const changeSelect = (val: number) => {
+  let city = allCity.value.find(item => item.id === val)
+  result.value = city!.name
+  if (radioValue.value === '按城市') {
+    emits('changeItem', city)
+  } else {
+    emits('changeProItem', city?.name)
+  }
+}
 let options = ref<cityItem[]>([])
 let allCity = ref<cityItem[]>([])
 // 自定义搜索过滤
@@ -84,6 +93,7 @@ onMounted(() => {
         <el-col :offset="1" :span="15">
           <el-select
             v-model="selectValue"
+            @change="changeSelect"
             filterable
             clearable
             placeholder="请搜索"
