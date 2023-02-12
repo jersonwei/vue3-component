@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { cityItem } from './type'
 import city from '../lib/city'
 import province from '../lib/province.json'
@@ -29,28 +29,34 @@ const clickProvinceItem = (item: string) => {
   visible.value = false
   emits('changeProItem', item)
 }
-const options = ref([
-  {
-    value: 'Option1',
-    label: 'Option1'
-  },
-  {
-    value: 'Option2',
-    label: 'Option2'
-  },
-  {
-    value: 'Option3',
-    label: 'Option3'
-  },
-  {
-    value: 'Option4',
-    label: 'Option4'
-  },
-  {
-    value: 'Option5',
-    label: 'Option5'
+let options = ref<cityItem[]>([])
+let allCity = ref<cityItem[]>([])
+// 自定义搜索过滤
+const filterMethod = (val: string) => {
+  let values = Object.values(cities.value).flat(2)
+  console.log(val)
+  if (val === '') {
+    options.value = values
+  } else {
+    if (radioValue.value === '按城市') {
+      // 中英文一起过滤
+      options.value = values.filter(item => {
+        return item.name.includes(val) || item.spell.includes(val)
+      })
+      console.log(options.value)
+    } else {
+      options.value = values.filter(item => {
+        return item.name.includes(val)
+      })
+      console.log(options.value)
+    }
   }
-])
+}
+onMounted(() => {
+  let values = Object.values(cities.value).flat(2)
+  allCity.value = values
+  options.value = values
+})
 </script>
 <template>
   <el-popover
@@ -78,15 +84,17 @@ const options = ref([
         <el-col :offset="1" :span="15">
           <el-select
             v-model="selectValue"
-            class="m-2"
-            placeholder="Select"
+            filterable
+            clearable
+            placeholder="请搜索"
             size="small"
+            :filter-method="filterMethod"
           >
             <el-option
               v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
             />
           </el-select>
         </el-col>
