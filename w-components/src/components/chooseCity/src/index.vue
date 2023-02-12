@@ -2,27 +2,32 @@
 import { ref } from 'vue'
 import { cityItem } from './type'
 import city from '../lib/city'
-let emits = defineEmits(['changeItem'])
+import province from '../lib/province.json'
+let emits = defineEmits(['changeItem', 'changeProItem'])
 // 选择的结果
 let result = ref<string>('请选择')
 // 弹出层显示
 let visible = ref<boolean>(false)
 // 单选框的值
-let radioValue = ref<string>('按城市')
+let radioValue = ref<string>('按省份')
 // 选择框的值
 let selectValue = ref<string>('')
 // 默认数据
 let cities = ref(city.cities)
+let provinces = ref(province)
 const clickItem = (item: cityItem) => {
   result.value = item.name
   visible.value = false
   emits('changeItem', item)
-  console.log('省份', item)
 }
 const clickChat = (item: string) => {
   let el = document.getElementById(item)!
   el && el.scrollIntoView()
-  console.log('字母', item)
+}
+const clickProvinceItem = (item: string) => {
+  result.value = item
+  visible.value = false
+  emits('changeProItem', item)
 }
 const options = ref([
   {
@@ -86,23 +91,26 @@ const options = ref([
           </el-select>
         </el-col>
       </el-row>
-      <div class="city">
-        <!-- <div v-for="(value, key) in cities">{{ key }}</div> -->
-        <!-- 字母区域 -->
-        <div
-          class="city-item"
-          :key="index"
-          @click="clickChat(item)"
-          v-for="(item, index) in Object.keys(cities)"
-        >
-          {{ item }}
+      <!-- 按城市 -->
+      <template v-if="radioValue === '按城市'">
+        <div class="city">
+          <!-- <div v-for="(value, key) in cities">{{ key }}</div> -->
+          <!-- 字母区域 -->
+          <div
+            class="city-item"
+            :key="index"
+            @click="clickChat(item)"
+            v-for="(item, index) in Object.keys(provinces)"
+          >
+            {{ item }}
+          </div>
         </div>
-        <!-- 省份区域 -->
+        <!-- 城市区域 -->
         <el-scrollbar max-height="400px">
           <template v-for="(value, key) in cities" :key="key">
             <el-row style="margin-bottom: 6px;" :id="key">
-              <el-col :span="2">{{ key }}</el-col>
-              <el-col class="city-name" :span="22">
+              <el-col :span="3">{{ key }}</el-col>
+              <el-col class="city-name" :span="21">
                 <div
                   class="city-name-item"
                   v-for="(item, index) in value"
@@ -115,7 +123,43 @@ const options = ref([
             </el-row>
           </template>
         </el-scrollbar>
-      </div>
+      </template>
+      <!-- 按省份 -->
+      <template v-else>
+        <div class="province">
+          <div
+            class="province-item"
+            v-for="(item, index) in Object.keys(provinces)"
+            :key="index"
+            @click="clickChat(item)"
+          >
+            {{ item }}
+          </div>
+        </div>
+        <!-- 省份区域 -->
+        <el-scrollbar max-height="400px">
+          <template
+            v-for="(item, index) in Object.values(provinces)"
+            :key="index"
+          >
+            <template v-for="(subItem, subIdx) in item" :key="subIdx">
+              <el-row style="margin-bottom: 6px;" :id="subItem.id">
+                <el-col :span="3">{{ subItem.name }}</el-col>
+                <el-col class="province-name" :span="21">
+                  <div
+                    class="province-name-item"
+                    v-for="(thrItem, thrIndex) in subItem.data"
+                    :key="thrIndex"
+                    @click="clickProvinceItem(thrItem)"
+                  >
+                    {{ thrItem }}
+                  </div>
+                </el-col>
+              </el-row>
+            </template>
+          </template>
+        </el-scrollbar>
+      </template>
     </div>
   </el-popover>
 </template>
@@ -140,25 +184,30 @@ svg {
 .container {
   padding: 6px;
 }
-.city {
+.city,
+.province {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   margin-top: 10px;
   margin-bottom: 10px;
   cursor: pointer;
-  &-item {
+  .city-item,
+  .province-item {
     padding: 3px 6px;
     margin-right: 8px;
     border: 1px solid #eee;
     margin-bottom: 8px;
   }
 }
-.city-name {
+.city-name,
+.province-name {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  &-item {
+  cursor: pointer;
+  .city-name-item,
+  .province-name-item {
     margin-right: 6px;
     margin-bottom: 6px;
     cursor: pointer;
