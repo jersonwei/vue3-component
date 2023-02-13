@@ -74,7 +74,7 @@ let data = [
   {
     icon: 'Setting',
     name: '弹出框表单',
-    index: '/modalForm'
+    index: '/modelForm'
   },
   {
     icon: 'ShoppingBag',

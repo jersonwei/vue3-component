@@ -8,11 +8,13 @@ import form from './form'
 import chooseIcon from './iconChoose'
 import list from './list'
 import menu from './menu'
+import modelForm from './modelForm'
 import notify from './notify'
 import progress from './progress'
 import timer from './timer'
 import trend from './trend'
 const components = [
+  modelForm,
   form,
   chooseCity,
   chooseDate,
