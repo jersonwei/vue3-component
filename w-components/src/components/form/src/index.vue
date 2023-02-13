@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { onMounted, PropType, ref, watch } from 'vue'
+import { nextTick, onMounted, PropType, ref, watch } from 'vue'
 import { FormInstance, FormOptions } from './type/types'
 import cloneDeep from 'lodash/cloneDeep'
+import E from 'wangeditor'
 let props = defineProps({
   options: {
     type: Array as PropType<FormOptions[]>,
@@ -33,6 +34,19 @@ const initForm = () => {
   props.options.map((item: FormOptions) => {
     m[item.prop!] = item.value
     r[item.prop!] = item.rules as any
+    if (item.type === 'editor') {
+      nextTick(() => {
+        if (document.getElementById('editor')) {
+          const editor = new E('#editor')
+          editor.config.placeholder = item.placeholder!
+          editor.create()
+          editor.$textElem.html(item.value)
+          editor.config.onchange = (newTxt: string) => {
+            model.value[item.prop!] = newTxt
+          }
+        }
+      })
+    }
   })
   model.value = cloneDeep(m)
   rules.value = cloneDeep(r)
@@ -119,6 +133,7 @@ watch(
           <slot name="uploadArea"></slot>
           <slot name="uploadTip"></slot>
         </el-upload>
+        <div v-if="item.type === 'editor'" id="editor"></div>
       </el-form-item>
       <el-form-item
         v-if="item.children && item.children.length"

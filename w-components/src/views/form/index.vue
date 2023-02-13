@@ -2,6 +2,7 @@
 import { FormInstance, FormOptions } from '../../components/form/src/type/types'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref } from 'vue'
+import { imageUpload } from '../../api/http'
 let options: FormOptions[] = [
   {
     type: 'input',
@@ -149,11 +150,49 @@ let options: FormOptions[] = [
       multiple: true,
       limit: 3
     }
+  },
+  {
+    type: 'editor',
+    value: '123',
+    prop: 'desc',
+    label: '描述',
+    placeholder: '请输入描述',
+    rules: [
+      {
+        required: true,
+        message: '描述不能为空',
+        trigger: 'change'
+      }
+    ]
   }
 ]
 interface Scope {
   form: FormInstance
   model: any
+}
+let httpRequest = (params: any) => {
+  const file = params.file,
+    fileType = file.type,
+    isImage = fileType.indexOf('image') !== -1,
+    isLt2M = file.size / 1024 / 1024 < 2 // 这里常规检验，看项目需求而定
+  if (!isImage) {
+    ElMessage.error('只能上传图片格式png、jpg、gif!')
+    return
+  }
+  if (!isLt2M) {
+    ElMessage.error('只能上传图片大小小于2M')
+    return
+  } // 根据后台需求数据格式
+  const form = new FormData() // 文件对象
+  form.append('file', file) // 本例子主要要在请求时添加特定属性，所以要用自己方法覆盖默认的action
+  form.append('clientType', 'xxx') // 项目封装的请求方法，下面做简单介绍
+  imageUpload(form)
+    .then(res => {
+      console.log(res)
+    })
+    .catch(() => {
+      // xxx
+    })
 }
 let handleRemove = (file: any, fileList: any) => {
   console.log('handleRemove')
