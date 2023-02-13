@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { FormOptions } from '../../components/form/src/type/types'
+import { FormInstance, FormOptions } from '../../components/form/src/type/types'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { ref } from 'vue'
 let options: FormOptions[] = [
   {
     type: 'input',
@@ -150,6 +151,10 @@ let options: FormOptions[] = [
     }
   }
 ]
+interface Scope {
+  form: FormInstance
+  model: any
+}
 let handleRemove = (file: any, fileList: any) => {
   console.log('handleRemove')
   console.log(file, fileList)
@@ -183,9 +188,24 @@ let handleBeforeUpload = (val: any) => {
   console.log('handleBeforeUpload')
   console.log(val)
 }
+let form = ref()
+let submitForm = (scope: Scope) => {
+  console.log(scope)
+  scope.form.validate(valid => {
+    if (valid) {
+      ElMessage.success('验证成功')
+    } else {
+      ElMessage.error('表单验证失败')
+    }
+  })
+}
+let resetForm = (scope: Scope) => {
+  scope.form.resetFields()
+}
 </script>
 <template>
   <wForm
+    ref="form"
     :options="options"
     label-width="100px"
     @on-change="handleChange"
@@ -203,6 +223,10 @@ let handleBeforeUpload = (val: any) => {
       <div class="el-upload__tip">
         jpg/png files with a size less than 500kb
       </div>
+    </template>
+    <template #action="scope">
+      <el-button type="primary" @click="submitForm(scope)">提交</el-button>
+      <el-button @click="resetForm(scope)">重置</el-button>
     </template>
   </wForm>
 </template>

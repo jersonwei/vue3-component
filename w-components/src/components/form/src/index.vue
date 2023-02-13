@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, PropType, ref, watch } from 'vue'
-import { FormOptions } from './type/types'
+import { FormInstance, FormOptions } from './type/types'
 import cloneDeep from 'lodash/cloneDeep'
 let props = defineProps({
   options: {
@@ -25,6 +25,7 @@ let emits = defineEmits([
 ])
 let model = ref<any>(null)
 let rules = ref<any>(null)
+let form = ref<FormInstance | null>()
 // 初始化表单
 const initForm = () => {
   let m: any = {}
@@ -81,6 +82,7 @@ watch(
 <template>
   <el-form
     v-if="model"
+    ref="form"
     :model="model"
     :rules="rules"
     v-bind="$attrs"
@@ -95,11 +97,12 @@ watch(
         <component
           v-if="item.type !== 'upload'"
           v-model="model[item.prop!]"
+          :placeholder="item.placeholder"
           v-bind="item.attrs"
           :is="`el-${item.type}`"
         ></component>
         <el-upload
-          v-else
+          v-if="item.type === 'upload'"
           v-bind="item.uploadAttrs"
           :on-preview="onPreview"
           :on-remove="onRemove"
@@ -139,6 +142,9 @@ watch(
         </component>
       </el-form-item>
     </template>
+    <el-form-item>
+      <slot name="action" :form="form" :model="model"></slot>
+    </el-form-item>
   </el-form>
 </template>
 <style lang="scss" scoped></style>
