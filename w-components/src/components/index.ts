@@ -11,9 +11,11 @@ import menu from './menu'
 import modelForm from './modelForm'
 import notify from './notify'
 import progress from './progress'
+import table from './table'
 import timer from './timer'
 import trend from './trend'
 const components = [
+  table,
   modelForm,
   form,
   chooseCity,
