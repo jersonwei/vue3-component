@@ -92,9 +92,19 @@ let resetFields = () => {
     edit.value.$textElem.html(editorItem?.value)
   }
 }
+// 分发表单的默认验证方法
+let validate = () => {
+  return form.value!.validate
+}
+// 表单数据
+let getFormData = () => {
+  return model.value
+}
 // 分发事件
 defineExpose({
-  resetFields
+  resetFields,
+  validate,
+  getFormData
 })
 onMounted(() => {
   initForm()
