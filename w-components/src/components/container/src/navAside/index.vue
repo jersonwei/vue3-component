@@ -67,7 +67,7 @@ let data = [
     index: '/calendar'
   },
   {
-    icon: 'Setting',
+    icon: 'Notebook',
     name: '表单',
     index: '/form'
   },

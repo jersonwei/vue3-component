@@ -4,6 +4,7 @@ import chooseArea from './chooseArea'
 import chooseCity from './chooseCity'
 import chooseDate from './chooseDate'
 import chooseStreet from './chooseStreet'
+import form from './form'
 import chooseIcon from './iconChoose'
 import list from './list'
 import menu from './menu'
@@ -12,6 +13,7 @@ import progress from './progress'
 import timer from './timer'
 import trend from './trend'
 const components = [
+  form,
   chooseCity,
   chooseDate,
   timer,
