@@ -27,6 +27,7 @@ let emits = defineEmits([
 let model = ref<any>(null)
 let rules = ref<any>(null)
 let form = ref<FormInstance | null>()
+let edit = ref()
 // 初始化表单
 const initForm = () => {
   let m: any = {}
@@ -44,6 +45,7 @@ const initForm = () => {
           editor.config.onchange = (newTxt: string) => {
             model.value[item.prop!] = newTxt
           }
+          edit.value = editor
         }
       })
     }
@@ -82,6 +84,18 @@ let beforeRemove = (file: File, fileList: FileList) => {
 let onExceed = (files: File, fileList: FileList) => {
   emits('on-exceed', { files, fileList })
 }
+let resetFields = () => {
+  // 重置表单
+  form.value!.resetFields()
+  if (props.options && props.options.length) {
+    let editorItem = props.options.find(item => item.type === 'editor')
+    edit.value.$textElem.html(editorItem?.value)
+  }
+}
+// 分发事件
+defineExpose({
+  resetFields
+})
 onMounted(() => {
   initForm()
 })

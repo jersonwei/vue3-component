@@ -238,8 +238,8 @@ let submitForm = (scope: Scope) => {
     }
   })
 }
-let resetForm = (scope: Scope) => {
-  scope.form.resetFields()
+let resetForm = () => {
+  form.value.resetFields()
 }
 </script>
 <template>
@@ -265,7 +265,7 @@ let resetForm = (scope: Scope) => {
     </template>
     <template #action="scope">
       <el-button type="primary" @click="submitForm(scope)">提交</el-button>
-      <el-button @click="resetForm(scope)">重置</el-button>
+      <el-button @click="resetForm">重置</el-button>
     </template>
   </wForm>
 </template>
