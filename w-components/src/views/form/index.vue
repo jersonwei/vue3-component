@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { FormOptions } from '../../components/form/src/type/types'
-
+import { ElMessage, ElMessageBox } from 'element-plus'
 let options: FormOptions[] = [
   {
     type: 'input',
@@ -131,10 +131,84 @@ let options: FormOptions[] = [
         value: '2'
       }
     ]
+  },
+  {
+    type: 'upload',
+    label: '上传',
+    prop: 'pic',
+    rules: [
+      {
+        required: true,
+        message: '文件不能为空',
+        trigger: 'change'
+      }
+    ],
+    uploadAttrs: {
+      action: 'https://jsonplaceholder.typicode.com/posts/',
+      multiple: true,
+      limit: 3
+    }
   }
 ]
+let handleRemove = (file: any, fileList: any) => {
+  console.log('handleRemove')
+  console.log(file, fileList)
+}
+let handlePreview = (file: any) => {
+  console.log('handlePreview')
+  console.log(file)
+}
+let beforeRemove = (val: any) => {
+  console.log('beforeRemove')
+  return ElMessageBox.confirm(`Cancel the transfert of ${val.file.name} ?`)
+}
+let handleExceed = (val: any) => {
+  console.log('handleExceed', val)
+  ElMessage.warning(
+    `The limit is 3, you selected ${
+      val.files.length
+    } files this time, add up to ${val.files.length +
+      val.fileList.length} totally`
+  )
+}
+let handleSuccess = (val: any) => {
+  console.log('success')
+  console.log(val)
+}
+let handleChange = (val: any) => {
+  console.log('change')
+  console.log(val)
+}
+let handleBeforeUpload = (val: any) => {
+  console.log('handleBeforeUpload')
+  console.log(val)
+}
 </script>
 <template>
-  <wForm :options="options" label-width="100px"></wForm>
+  <wForm
+    :options="options"
+    label-width="100px"
+    @on-change="handleChange"
+    @before-upload="handleBeforeUpload"
+    @on-preview="handlePreview"
+    @on-remove="handleRemove"
+    @before-remove="beforeRemove"
+    @on-success="handleSuccess"
+    @on-exceed="handleExceed"
+  >
+    <template #uploadArea>
+      <el-button type="primary">Click to upload</el-button>
+    </template>
+    <template #uploadTip>
+      <div class="el-upload__tip">
+        jpg/png files with a size less than 500kb
+      </div>
+    </template>
+  </wForm>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-upload__tip {
+  color: #ccc;
+  font-size: 12px;
+}
+</style>
