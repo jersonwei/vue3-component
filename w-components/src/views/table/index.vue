@@ -51,8 +51,35 @@ let options: TableOptions[] = [
     align: 'center'
   }
 ]
+const editFn = (scope: Boolean) => {}
+const deleteFn = (scope: Boolean) => {}
 </script>
 <template>
-  <wTable :options="options" :data="tableData"></wTable>
+  <wTable :options="options" :data="tableData">
+    <template #date="{scope}">
+      <div style="display: flex; align-items: center">
+        <el-icon><timer /></el-icon>
+        <span style="margin-left: 10px">{{ scope.row.date }}</span>
+      </div>
+    </template>
+    <template #name="{scope}">
+      <div style="display: flex; align-items: center;justify-content: center;">
+        <el-tag>{{ scope.row.name }}</el-tag>
+      </div>
+    </template>
+    <template #action="{scope}">
+      <el-button type="primary" size="small" @click="editFn(scope)"
+        >编辑</el-button
+      >
+      <el-button type="danger" size="small" @click="deleteFn(scope)"
+        >删除</el-button
+      >
+    </template>
+  </wTable>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+svg {
+  width: 1em;
+  height: 1em;
+}
+</style>
