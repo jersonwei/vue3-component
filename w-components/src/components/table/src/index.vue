@@ -10,15 +10,39 @@ let props = defineProps({
   data: {
     type: Array as PropType<any[]>,
     required: true
+  },
+  elementLoadingText: {
+    type: String
+  },
+  elementLoadinSpiner: {
+    type: String
+  },
+  elementLoadingBac: {
+    type: String
+  },
+  elementLoadingSvg: {
+    type: String
+  },
+  elememtLoadingSvgViewBox: {
+    type: String
   }
 })
 // 过滤操作项的配置
 let tableOptions = computed(() => props.options.filter(item => !item.action))
 // 找到操作项的配置
 let btnOptions = computed(() => props.options.find(item => item.action))
+let isLoading = computed(() => !props.data || !props.data.length)
 </script>
 <template>
-  <el-table :data="data">
+  <el-table
+    :data="data"
+    v-loading="isLoading"
+    :element-loading-text="elementLoadingText"
+    :element-loading-spinner="elementLoadinSpiner"
+    :element-loading-background="elementLoadingBac"
+    :element-loading-svg="elementLoadingSvg"
+    :element-loading-svg-view-box="elememtLoadingSvgViewBox"
+  >
     <template v-for="(item, index) in tableOptions" :key="index">
       <el-table-column
         v-if="!item.slot"
