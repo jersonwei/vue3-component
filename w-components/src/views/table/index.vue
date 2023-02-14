@@ -6,31 +6,30 @@ interface TableData {
   name: string
   address: string
 }
+let editRowIndex = ref<string>('')
 let tableData = ref<TableData[]>([])
-setTimeout(() => {
-  tableData.value = [
-    {
-      date: '2016-05-03',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles'
-    },
-    {
-      date: '2016-05-02',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles'
-    },
-    {
-      date: '2016-05-04',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles'
-    },
-    {
-      date: '2016-05-01',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles'
-    }
-  ]
-}, 100)
+tableData.value = [
+  {
+    date: '2016-05-03',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles'
+  },
+  {
+    date: '2016-05-02',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles'
+  },
+  {
+    date: '2016-05-04',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles'
+  },
+  {
+    date: '2016-05-01',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles'
+  }
+]
 // const tableData = [
 //   {
 //     date: '2016-05-03',
@@ -93,16 +92,23 @@ let options: TableOptions[] = [
   }
 ]
 const editFn = (scope: any) => {
-  console.log(scope)
+  editRowIndex.value = 'edit'
+  console.log('btnEdit', scope)
 }
 const deleteFn = (scope: any) => {
-  console.log(scope)
+  console.log('btndelete', scope)
 }
 const handleCheck = (scope: any) => {
-  console.log(scope)
+  console.log('handleCheck', scope)
 }
 const handleClose = (scope: any) => {
-  console.log(scope)
+  console.log('handleClose', scope)
+}
+const confirmRowFn = (scope: any) => {
+  console.log('confirmRowFn', scope)
+}
+const cancleRowFn = (scope: any) => {
+  console.log('cancleRowFn', scope)
 }
 </script>
 <template>
@@ -115,6 +121,8 @@ const handleClose = (scope: any) => {
     element-loading-svg-view-box="-10, -10, 50, 50"
     @check="handleCheck"
     @close="handleClose"
+    isEditRow
+    v-model:editRowIndex="editRowIndex"
   >
     <template #date="{scope}">
       <div style="display: flex; align-items: center">
@@ -135,12 +143,20 @@ const handleClose = (scope: any) => {
         >删除</el-button
       >
     </template>
-    <template #editCell="{scope}">
+    <template #editRow="{scope}">
+      <el-button type="primary" size="small" @click="confirmRowFn(scope)"
+        >确认</el-button
+      >
+      <el-button type="danger" size="small" @click="cancleRowFn(scope)"
+        >取消</el-button
+      >
+    </template>
+    <!-- <template #editCell="{scope}">
       <div class="confiirmBox" style="display: flex;">
         <el-button size="small" type="primary">确认</el-button>
         <el-button size="small">取消</el-button>
       </div>
-    </template>
+    </template> -->
   </wTable>
 </template>
 <style lang="scss" scoped>
