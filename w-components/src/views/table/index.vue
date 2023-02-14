@@ -30,7 +30,7 @@ setTimeout(() => {
       address: 'No. 189, Grove St, Los Angeles'
     }
   ]
-}, 1000)
+}, 100)
 // const tableData = [
 //   {
 //     date: '2016-05-03',
@@ -67,7 +67,7 @@ let options: TableOptions[] = [
   {
     prop: 'date',
     label: '日期',
-    // width: '180',
+    width: '280',
     align: 'center',
     slot: 'date',
     editable: true
@@ -75,12 +75,13 @@ let options: TableOptions[] = [
   {
     prop: 'name',
     label: '姓名',
-    // width: '180',
+    width: '280',
     align: 'center',
     slot: 'name'
   },
   {
     prop: 'address',
+    width: '380',
     label: '地址',
     align: 'center',
     editable: true
@@ -91,8 +92,18 @@ let options: TableOptions[] = [
     align: 'center'
   }
 ]
-const editFn = (scope: Boolean) => {}
-const deleteFn = (scope: Boolean) => {}
+const editFn = (scope: any) => {
+  console.log(scope)
+}
+const deleteFn = (scope: any) => {
+  console.log(scope)
+}
+const handleCheck = (scope: any) => {
+  console.log(scope)
+}
+const handleClose = (scope: any) => {
+  console.log(scope)
+}
 </script>
 <template>
   <wTable
@@ -102,6 +113,8 @@ const deleteFn = (scope: Boolean) => {}
     elementLoadingBackground="rgba(0,0,0,.8)"
     :element-loading-svg="svg"
     element-loading-svg-view-box="-10, -10, 50, 50"
+    @check="handleCheck"
+    @close="handleClose"
   >
     <template #date="{scope}">
       <div style="display: flex; align-items: center">
@@ -122,11 +135,24 @@ const deleteFn = (scope: Boolean) => {}
         >删除</el-button
       >
     </template>
+    <template #editCell="{scope}">
+      <div class="confiirmBox" style="display: flex;">
+        <el-button size="small" type="primary">确认</el-button>
+        <el-button size="small">取消</el-button>
+      </div>
+    </template>
   </wTable>
 </template>
 <style lang="scss" scoped>
-svg {
+.svg {
   width: 1em;
   height: 1em;
+}
+.confiirmBox {
+  padding-left: 6px;
+  display: flex;
+  position: relative;
+  top: 5px;
+  cursor: pointer;
 }
 </style>
