@@ -160,6 +160,7 @@ const handleSortChange = (val: any) => {
     @close="handleClose"
     paginationAlign="center"
     isEditRow
+    highlightCurrentRow
     v-model:editRowIndex="editRowIndex"
     :total="total"
     :currentPage="current"

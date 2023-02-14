@@ -61,6 +61,10 @@ let props = defineProps({
   paginationAlign: {
     type: String as PropType<'left' | 'center' | 'right'>,
     default: 'center'
+  },
+  highlightCurrentRow: {
+    type: Boolean,
+    default: false
   }
 })
 let emits = defineEmits([
@@ -167,6 +171,7 @@ const sortChange = (column: any, prop: string, order: string) => {
     :element-loading-svg="elementLoadingSvg"
     :element-loading-svg-view-box="elememtLoadingSvgViewBox"
     @row-click="rowClick"
+    :highlight-current-row="highlightCurrentRow"
     @sort-change="sortChange"
   >
     <template v-for="(item, index) in tableOptions" :key="index">
