@@ -73,14 +73,16 @@ let options: TableOptions[] = [
     width: '280',
     align: 'center',
     slot: 'date',
-    editable: true
+    editable: true,
+    sortable: true
   },
   {
     prop: 'name',
     label: '姓名',
     width: '280',
     align: 'center',
-    slot: 'name'
+    slot: 'name',
+    sortable: true
   },
   {
     prop: 'address',
@@ -142,6 +144,9 @@ const handleCurrentChange = (page: number) => {
   current.value = page
   getData()
 }
+const handleSortChange = (val: any) => {
+  console.log(val)
+}
 </script>
 <template>
   <wTable
@@ -160,6 +165,7 @@ const handleCurrentChange = (page: number) => {
     :currentPage="current"
     :pageSize="pageSize"
     pagination
+    @sort-change="handleSortChange"
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
   >

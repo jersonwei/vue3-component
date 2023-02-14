@@ -68,7 +68,8 @@ let emits = defineEmits([
   'close',
   'update:editRowIndex',
   'size-change',
-  'current-change'
+  'current-change',
+  'sort-change'
 ])
 // 当前点击的单元格
 let currentEdit = ref<string>('')
@@ -151,6 +152,9 @@ const handleSizeChange = (size: number) => {
 const handleCurrentChange = (page: number) => {
   emits('current-change', page)
 }
+const sortChange = (column: any, prop: string, order: string) => {
+  emits('sort-change', column)
+}
 </script>
 <template>
   <el-table
@@ -163,6 +167,7 @@ const handleCurrentChange = (page: number) => {
     :element-loading-svg="elementLoadingSvg"
     :element-loading-svg-view-box="elememtLoadingSvgViewBox"
     @row-click="rowClick"
+    @sort-change="sortChange"
   >
     <template v-for="(item, index) in tableOptions" :key="index">
       <!-- <el-table-column
@@ -176,6 +181,7 @@ const handleCurrentChange = (page: number) => {
       <el-table-column
         :label="item.label"
         :prop="item.prop"
+        :sortable="item.sortable"
         :align="item.align"
         :width="item.width"
       >

@@ -13,4 +13,5 @@ export interface TableOptions {
   action?: boolean,
   // 是否可以编辑
   editable?: boolean
+  sortable?:boolean
 }
