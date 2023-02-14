@@ -13,6 +13,7 @@
     "@fullcalendar/core": "^6.1.4",
     "@fullcalendar/daygrid": "^6.1.4",
     "@fullcalendar/interaction": "^6.1.4",
+    "@fullcalendar/vue3": "^6.1.4",
     "@types/axios": "^0.14.0",
     "@types/lodash": "^4.14.191",
     "@types/mockjs": "^1.0.7",

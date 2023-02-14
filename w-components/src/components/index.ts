@@ -1,4 +1,5 @@
 import type {App} from 'vue'
+import calendar from './calendar'
 import cascaderArea from './cascaderArea'
 import chooseArea from './chooseArea'
 import chooseCity from './chooseCity'
@@ -15,6 +16,7 @@ import table from './table'
 import timer from './timer'
 import trend from './trend'
 const components = [
+  calendar,
   table,
   modelForm,
   form,

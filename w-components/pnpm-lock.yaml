@@ -5,6 +5,7 @@ specifiers:
   '@fullcalendar/core': ^6.1.4
   '@fullcalendar/daygrid': ^6.1.4
   '@fullcalendar/interaction': ^6.1.4
+  '@fullcalendar/vue3': ^6.1.4
   '@types/axios': ^0.14.0
   '@types/lodash': ^4.14.191
   '@types/mockjs': ^1.0.7
@@ -29,6 +30,7 @@ dependencies:
   '@fullcalendar/core': registry.npmmirror.com/@fullcalendar/core/6.1.4
   '@fullcalendar/daygrid': registry.npmmirror.com/@fullcalendar/daygrid/6.1.4_@fullcalendar+core@6.1.4
   '@fullcalendar/interaction': registry.npmmirror.com/@fullcalendar/interaction/6.1.4_@fullcalendar+core@6.1.4
+  '@fullcalendar/vue3': registry.npmmirror.com/@fullcalendar/vue3/6.1.4_kbun5wlfjtwjgtgvkrskzg44gq
   '@types/axios': registry.npmmirror.com/@types/axios/0.14.0
   '@types/lodash': registry.npmmirror.com/@types/lodash/4.14.191
   '@types/mockjs': registry.npmmirror.com/@types/mockjs/1.0.7
@@ -750,6 +752,19 @@ packages:
       '@fullcalendar/core': ~6.1.4
     dependencies:
       '@fullcalendar/core': registry.npmmirror.com/@fullcalendar/core/6.1.4
+    dev: false
+
+  registry.npmmirror.com/@fullcalendar/vue3/6.1.4_kbun5wlfjtwjgtgvkrskzg44gq:
+    resolution: {integrity: sha512-5xuGFFRDSD5CF1RGx7GcIrIAi/qAFsKmSN3ABUtocTMZlC0s2JucDa7Vur1tcoq1tbj0WyHhGhxTAUN2mpDq0A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@fullcalendar/vue3/-/vue3-6.1.4.tgz}
+    id: registry.npmmirror.com/@fullcalendar/vue3/6.1.4
+    name: '@fullcalendar/vue3'
+    version: 6.1.4
+    peerDependencies:
+      '@fullcalendar/core': ~6.1.4
+      vue: ^3.0.11
+    dependencies:
+      '@fullcalendar/core': registry.npmmirror.com/@fullcalendar/core/6.1.4
+      vue: registry.npmmirror.com/vue/3.2.45
     dev: false
 
   registry.npmmirror.com/@jridgewell/gen-mapping/0.1.1:
