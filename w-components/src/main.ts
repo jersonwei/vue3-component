@@ -9,6 +9,7 @@ import 'element-plus/dist/index.css'
 import * as Icons from '@element-plus/icons-vue'
 import App from './App.vue'
 import { toLine } from './utils/func'
+import './mock'
 const app = createApp(App)
 for (const [key, component] of Object.entries(Icons)) {
 app.component(`el-icon-${toLine(key)}`, component)

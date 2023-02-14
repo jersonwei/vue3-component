@@ -37,9 +37,39 @@ let props = defineProps({
   },
   editRowIndex: {
     type: String
+  },
+  currentPage: {
+    type: Number,
+    default: 1
+  },
+  pageSizes: {
+    type: Array as PropType<number[]>,
+    default: [10, 20, 30, 40, 50]
+  },
+  pageSize: {
+    type: Number,
+    default: 10
+  },
+  total: {
+    type: Number,
+    default: 10
+  },
+  pagination: {
+    type: Boolean,
+    default: false
+  },
+  paginationAlign: {
+    type: String as PropType<'left' | 'center' | 'right'>,
+    default: 'center'
   }
 })
-let emits = defineEmits(['check', 'close', 'update:editRowIndex'])
+let emits = defineEmits([
+  'check',
+  'close',
+  'update:editRowIndex',
+  'size-change',
+  'current-change'
+])
 // 当前点击的单元格
 let currentEdit = ref<string>('')
 // 过滤操作项的配置
@@ -114,9 +144,17 @@ const rowClick = (row: any, column: any) => {
     }
   }
 }
+// 分页组件
+const handleSizeChange = (size: number) => {
+  emits('size-change', size)
+}
+const handleCurrentChange = (page: number) => {
+  emits('current-change', page)
+}
 </script>
 <template>
   <el-table
+    v-bind="$attrs"
     :data="cloneTableData"
     v-loading="isLoading"
     :element-loading-text="elementLoadingText"
@@ -196,6 +234,17 @@ const rowClick = (row: any, column: any) => {
       </template>
     </el-table-column>
   </el-table>
+  <div v-if="pagination">
+    <el-pagination
+      :currentPage="currentPage"
+      :page-size="pageSize"
+      :page-sizes="pageSizes"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+  </div>
 </template>
 <style lang="scss" scoped>
 .edit {

@@ -1,35 +1,39 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import axios from 'axios'
+import { onMounted, ref } from 'vue'
 import { TableOptions } from '../../components/table/src/type'
 interface TableData {
   date: string
   name: string
   address: string
 }
+let current = ref<number>(1)
+let pageSize = ref<number>(10)
+let total = ref<number>(10)
 let editRowIndex = ref<string>('')
 let tableData = ref<TableData[]>([])
-tableData.value = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  }
-]
+// tableData.value = [
+//   {
+//     date: '2016-05-03',
+//     name: 'Tom',
+//     address: 'No. 189, Grove St, Los Angeles'
+//   },
+//   {
+//     date: '2016-05-02',
+//     name: 'Tom',
+//     address: 'No. 189, Grove St, Los Angeles'
+//   },
+//   {
+//     date: '2016-05-04',
+//     name: 'Tom',
+//     address: 'No. 189, Grove St, Los Angeles'
+//   },
+//   {
+//     date: '2016-05-01',
+//     name: 'Tom',
+//     address: 'No. 189, Grove St, Los Angeles'
+//   }
+// ]
 // const tableData = [
 //   {
 //     date: '2016-05-03',
@@ -110,6 +114,34 @@ const confirmRowFn = (scope: any) => {
 const cancleRowFn = (scope: any) => {
   console.log('cancleRowFn', scope)
 }
+const getData = () => {
+  axios
+    .post('/api/list', {
+      current: current.value,
+      pageSize: pageSize.value
+    })
+    .then(res => {
+      console.log(res)
+      const resData = res.data.data
+      tableData.value = resData.rows
+      total.value = resData.total
+      current.value = resData.current
+      pageSize.value = resData.pageSize
+    })
+}
+onMounted(() => {
+  getData()
+})
+const handleSizeChange = (size: number) => {
+  console.log(size)
+  pageSize.value = size
+  getData()
+}
+const handleCurrentChange = (page: number) => {
+  console.log(page)
+  current.value = page
+  getData()
+}
 </script>
 <template>
   <wTable
@@ -121,8 +153,15 @@ const cancleRowFn = (scope: any) => {
     element-loading-svg-view-box="-10, -10, 50, 50"
     @check="handleCheck"
     @close="handleClose"
+    paginationAlign="center"
     isEditRow
     v-model:editRowIndex="editRowIndex"
+    :total="total"
+    :currentPage="current"
+    :pageSize="pageSize"
+    pagination
+    @size-change="handleSizeChange"
+    @current-change="handleCurrentChange"
   >
     <template #date="{scope}">
       <div style="display: flex; align-items: center">
