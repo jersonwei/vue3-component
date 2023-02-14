@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import FullCalendar from '@fullcalendar/vue3'
-import { EventClickArg } from '@fullcalendar/core'
 import { PropType, ref } from 'vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'
 import { EventItem } from './types'
-import { co } from '@fullcalendar/core/internal-common'
 let props = defineProps({
   // 日历显示的语言
   local: {
@@ -16,6 +14,10 @@ let props = defineProps({
   initialView: {
     type: String,
     default: 'dayGridMonth'
+  },
+  // 初始事件
+  INITIAL_EVENTS: {
+    type: Array
   },
   // 按钮文字
   buttonText: {
@@ -56,26 +58,13 @@ let props = defineProps({
   // 自定义渲染内容方法
   eventContent: {
     type: Function
+  },
+  createEventId: {
+    type: Function,
+    required: true
   }
 })
-let eventGuid = 0
 let currentEvents = ref<any[]>([])
-let todayStr = ref<string>(new Date().toISOString().replace(/T.*$/, '')) // YYYY-MM-DD of today
-const createEventId = () => {
-  return String(eventGuid++)
-}
-const INITIAL_EVENTS = ref([
-  {
-    id: createEventId(),
-    title: 'All-day event',
-    start: todayStr.value
-  },
-  {
-    id: createEventId(),
-    title: 'Timed event',
-    start: todayStr.value + 'T12:00:00'
-  }
-])
 
 const handleEventClick = (clickInfo: any) => {
   if (
@@ -94,7 +83,7 @@ const handleDateSelect = (selectInfo: any) => {
 
   if (title) {
     calendarApi.addEvent({
-      id: createEventId(),
+      id: props.createEventId(),
       title,
       start: selectInfo.startStr,
       end: selectInfo.endStr,
@@ -115,7 +104,7 @@ calendarOptions.value = {
   plugins: [dayGridPlugin, interactionPlugin],
   // 视图模式
   initialView: props.initialView,
-  initialEvents: INITIAL_EVENTS,
+  initialEvents: props.INITIAL_EVENTS,
   locale: props.local,
   buttonText: props.buttonText,
   headerToolbar: props.headerToolbar,
